@@ -1,0 +1,47 @@
+Número de vértices: 1000022
+Número de arestas: 17666652
+Grau mínimo: 1
+Grau máximo: 87
+Mediana de grau: 37
+Grau médio: 35
+
+Componente 1 Tamanho: 500000
+
+Componente 2 Tamanho: 62500
+
+Componente 3 Tamanho: 125000
+
+Componente 4 Tamanho: 250000
+
+Componente 5 Tamanho: 7812
+
+Componente 6 Tamanho: 31250
+
+Componente 7 Tamanho: 15625
+
+Componente 8 Tamanho: 3906
+
+Componente 9 Tamanho: 976
+
+Componente 10 Tamanho: 488
+
+Componente 11 Tamanho: 1953
+
+Componente 12 Tamanho: 10
+
+Componente 13 Tamanho: 61
+
+Componente 14 Tamanho: 10
+
+Componente 15 Tamanho: 244
+
+Componente 16 Tamanho: 122
+
+Componente 17 Tamanho: 15
+
+Componente 18 Tamanho: 30
+
+Componente 19 Tamanho: 10
+
+Componente 20 Tamanho: 10
+
