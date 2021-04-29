@@ -8,6 +8,7 @@ Menu::Menu() {
     continuar = true;
 };
 
+//Função que recebe o arquivo de texto com as informações do grafo
 void Menu::receberArquivo() {
     
     string nome;
@@ -31,6 +32,7 @@ void Menu::receberArquivo() {
     lerArquivo(nome);
 }
 
+//Função que lê o arquivo e cria uma matriz ou um vector de adjacência para representar o grafo
 void Menu::lerArquivo(string path) {
     ifstream arquivo; 
     Grafo grafo; 
@@ -117,11 +119,11 @@ void Menu::lerArquivo(string path) {
             grafo.setListaAdj(listaAdj);
             cout << "Lido" << endl;
         }
-        return estudoDeCaso(grafo);
-        //return escreverSaida(grafo);
+        return escreverSaida(grafo);
     }
 }
 
+//Função que escreve todas as informações necessárias em um arquivo .txt
 void Menu::escreverSaida(Grafo g) { 
     ofstream arquivo;
     int opcao;
@@ -222,14 +224,3 @@ void Menu::escreverSaida(Grafo g) {
     }
 }
 
-void Menu::estudoDeCaso(Grafo g) {
-    cout << "Entrou no estudo de caso" << endl;
-
-    clock_t tStart = clock();
-
-    cout << g.getDiametro() << endl;
-    
-
-    cout << ((clock() - tStart)/CLOCKS_PER_SEC) << endl;
-
-}

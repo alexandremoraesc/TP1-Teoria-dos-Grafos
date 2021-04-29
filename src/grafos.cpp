@@ -11,6 +11,7 @@ using namespace std;
 
 Grafo::Grafo() {};
 
+//Realiza uma BFS para um vértice v passado como raiz
 vector<vector<int>> Grafo::BFS(int v) {
     if (matriz) {
         //Define o vetor de vértices marcados e a fila Q
@@ -86,6 +87,8 @@ vector<vector<int>> Grafo::BFS(int v) {
 
 }
 
+//Realiza uma DFS para um vértice v passado como raiz
+
 vector<vector<int>> Grafo::DFS(int v) {
     if (matriz) {
         vector<int> visitados(numVertices+1,0);
@@ -153,14 +156,17 @@ vector<vector<int>> Grafo::DFS(int v) {
     }
 }
 
+//Seta o número de vértices do grafo em um atributo
 void Grafo::setNumVertices(int v) {
     numVertices = v;
 }
 
+//Seta o número de arestas do grafo em um atributo
 void Grafo::setNumArestas(int a) {
     numArestas = a;
 }
 
+//Calcula o grau de todos os vértices do grafo
 vector<int> Grafo::getGraus() {
     if (matriz) {
         vector<int> graus;
@@ -197,6 +203,7 @@ vector<int> Grafo::getGraus() {
     }
 }
 
+//Calcula o grau mínimo do grafo
 int Grafo::getGrauMin() {
     int minGrau = grausVertices.at(1);
 
@@ -209,6 +216,7 @@ int Grafo::getGrauMin() {
     return minGrau;
 }
 
+//Calcula o grau máximo do grafo
 int Grafo::getGrauMax() {
     int maxGrau = 0;
 
@@ -221,6 +229,7 @@ int Grafo::getGrauMax() {
     return maxGrau;
 }
 
+//Calcula o grau médio do grafo
 int Grafo::getGrauMed() {
     int media;
     int soma = 0;
@@ -233,6 +242,7 @@ int Grafo::getGrauMed() {
     return media;
 }
 
+//Calcula a mediana de grau do grafo
 int Grafo::getMedianaGrau() {
     sort(grausVertices.begin(), grausVertices.end());
     int k = numVertices/2;
@@ -240,11 +250,13 @@ int Grafo::getMedianaGrau() {
     return grausVertices.at(k);
 }
 
+//Calcula a distância entre dois vértices
 int Grafo::getDistancia(int v1, int v2, vector<vector<int>> bfs) {
 
     return abs(bfs.at(v2).at(1)-bfs.at(v1).at(1));
 }
 
+//Calcula o diâmetro do grafo
 int Grafo::getDiametro() {
     int diametro = 0;
     vector<vector<int>> g = getComponentesConexas(); 
@@ -271,10 +283,12 @@ int Grafo::getDiametro() {
     return diametro;
 }
 
+//Seta a matriz de adjacência em um atributo
 void Grafo::setMatrizAdj(vector<vector<bool>> matrizadj) {
     matrizAdj = matrizadj;
 }
 
+//Seta o vector de adjacência em um atributo
 void Grafo::setListaAdj(vector<vector<int>> lista) {
     listaAdj = lista;
 }
@@ -290,7 +304,7 @@ void Grafo::printArestas() {
         arestas.at(i).printAresta();
     }
 }
-
+//Adiciona uma aresta ao grafo
 void Grafo::addAresta(Aresta a) {
     arestas.push_back(a);
 }
@@ -303,6 +317,9 @@ int Grafo::getNumArestas() {
     return numArestas;
 }
 
+//Função que retorna um vector com as componentes conexas do grafo
+//Ideia é fazer uma BFS (começando em 1) e caso um vértice do grafo não esteja no resultado
+//Fazer a BFS nele e seguir nessa lógica até todos os vértices serem visitados
 vector<vector<int>> Grafo::getComponentesConexas() {
 
     vector<vector<int>> a;
