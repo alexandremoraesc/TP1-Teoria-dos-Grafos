@@ -29,13 +29,13 @@ vector<vector<int>> Grafo::BFS(int v) {
             int a = Q.front();
             Q.pop();
 
-            vector<bool> vizinhos = matrizAdj.at(a);
+            vector<int> vizinhos = matrizAdj.at(a);
 
             for (int i=1; i<vizinhos.size(); i++) {
-                if (vizinhos[i] == 1) {
-                    if(visitados[vizinhos[i]] == 0) {
-                        visitados[vizinhos[i]] = 1;
-                        explorados.push_back(vizinhos[i]);
+                if (vizinhos[i] != 0) {
+                    if(visitados[i] == 0) {
+                        visitados[i] = 1;
+                        explorados.push_back(i);
                         Q.push(i);
                         nivelPai.at(i).at(0) = a;
                         nivelPai.at(i).at(1) = nivelPai.at(a).at(1) + 1;
@@ -100,13 +100,13 @@ vector<vector<int>> Grafo::DFS(int v) {
         pilha.push(v);
         while (pilha.size() != 0) {
             int a = pilha.top();
-            vector<bool> vizinhos = matrizAdj.at(a);
+            vector<int> vizinhos = matrizAdj.at(a);
             pilha.pop();
             if (visitados[a] == 0) {
                 visitados[a] = 1;
                 marcados.push_back(a);
                 for(int i= vizinhos.size()-1; i>=0; i--) {
-                    if(vizinhos.at(i) == 1) {
+                    if(vizinhos.at(i) != 0) {
                         pilha.push(i);
                         if (visitados[i] == 0) {
                             nivelPai.at(i).at(0) = a;
@@ -284,7 +284,7 @@ int Grafo::getDiametro() {
 }
 
 //Seta a matriz de adjacência em um atributo
-void Grafo::setMatrizAdj(vector<vector<bool>> matrizadj) {
+void Grafo::setMatrizAdj(vector<vector<int>> matrizadj) {
     matrizAdj = matrizadj;
 }
 
@@ -307,6 +307,9 @@ void Grafo::printArestas() {
 //Adiciona uma aresta ao grafo
 void Grafo::addAresta(Aresta a) {
     arestas.push_back(a);
+    if (matriz == false) {
+        arestasPesos.insert(make_pair(make_pair(a.getVertices()[0], a.getVertices()[1]), a.getPeso()));
+    }
 }
 
 int Grafo::getNumVertices() {

@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include "aresta.h"
+#include <map>
 
 using namespace std;
 
@@ -13,11 +14,12 @@ class Grafo {
         Grafo();
         vector<vector<int>> BFS(int);
         vector<vector<int>> DFS(int);
+        vector<int> Dijk(int);
         void printArestas();
         void printVertices();
         void setNumVertices(int);
         void setNumArestas(int);
-        void setMatrizAdj(vector<vector<bool>>);
+        void setMatrizAdj(vector<vector<int>>);
         void setListaAdj (vector<vector<int>>);
         void addAresta(Aresta);
         vector<int> getGraus();
@@ -32,12 +34,13 @@ class Grafo {
         vector<vector<int>> getComponentesConexas();
         bool matriz;
         vector<vector<int>> componentesconexas;
+        map<pair<int, int>, int> arestasPesos;  
         
     private:
         vector<int> grausVertices;
         int numVertices;
         int numArestas;
-        vector<vector<bool>> matrizAdj;
+        vector<vector<int>> matrizAdj;
         vector<vector<int>> listaAdj;
         vector<Aresta> arestas;
         vector<int> vertices;

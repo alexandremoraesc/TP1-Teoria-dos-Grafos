@@ -62,7 +62,7 @@ void Menu::lerArquivo(string path) {
             grafo.setNumVertices(n);
 
             //Cria a matriz de adjacencia, e seta todos os valores como false
-            vector<vector<bool>> matrizAdj(n+1, vector<bool>(n+1, false));
+            vector<vector<int>> matrizAdj(n+1, vector<int>(n+1, 0));
 
             //Le o arquivo e coloca os valores como true onde existe aresta, e soma uma aresta a contagem
             int nArestas = 0;
@@ -71,13 +71,13 @@ void Menu::lerArquivo(string path) {
             while(getline(arquivo, l)) {
                 if (l.empty() == false) {
                     istringstream input(l);
-                    int v1, v2;
-                    input >> v1 >> v2;
+                    int v1, v2, peso;
+                    input >> v1 >> v2 >> peso;
 
-                    grafo.addAresta(Aresta(v1, v2));
+                    grafo.addAresta(Aresta(v1, v2, peso));
 
-                    matrizAdj.at(v1).at(v2) = true;
-                    matrizAdj.at(v2).at(v1) = true;
+                    matrizAdj.at(v1).at(v2) = peso;
+                    matrizAdj.at(v2).at(v1) = peso;
                     nArestas++;
                 }
             }
@@ -98,6 +98,7 @@ void Menu::lerArquivo(string path) {
 
             //Inicializando um contador de arestas 
             int numArestas = 0;
+            
             string l;
 
             while (getline(arquivo, l)) { 
@@ -106,7 +107,6 @@ void Menu::lerArquivo(string path) {
                     istringstream input(l);
                     int v1, v2;
                     input >> v1 >> v2;
-                    //cout << v1 << '-' << v2 << endl;
 
                     grafo.addAresta(Aresta(v1, v2));
                     numArestas++;

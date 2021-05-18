@@ -3,9 +3,10 @@
 
 using namespace std; 
 
-Aresta::Aresta(int v1, int v2) {
+Aresta::Aresta(int v1, int v2, int peso_) {
     vertices.push_back(v1);
     vertices.push_back(v2);
+    peso = peso_;
 }
 
 void Aresta::printAresta() {
@@ -15,4 +16,8 @@ void Aresta::printAresta() {
 
 vector<int> Aresta::getVertices() {
     return vertices;
+}
+
+int Aresta::getPeso() {
+    return peso;
 }

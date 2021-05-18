@@ -8,11 +8,13 @@ using namespace std;
 
 class Aresta { 
     public:
-        Aresta(int, int);
+        Aresta(int, int, int = 1);
         void printAresta();
         vector<int> getVertices();
+        int getPeso();
     private:
         vector<int> vertices;  
+        int peso;
 };
 
 #endif
