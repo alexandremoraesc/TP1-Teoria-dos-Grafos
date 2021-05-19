@@ -35,7 +35,8 @@ class Grafo {
         bool matriz;
         vector<vector<int>> componentesconexas;
         map<pair<int, int>, int> arestasPesos;  
-        
+        bool arestaNeg; 
+
     private:
         vector<int> grausVertices;
         int numVertices;

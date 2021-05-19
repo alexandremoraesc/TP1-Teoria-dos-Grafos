@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <cstdlib>
 #include <limits.h>
-
+#include "BinHeap.h"
 
 using namespace std;
 
@@ -360,4 +360,100 @@ vector<vector<int>> Grafo::getComponentesConexas() {
     componentesconexas = compConexas;
     return compConexas;
     
+}
+
+vector<int> Grafo::Dijk(int s) {
+    if (arestaNeg) {
+        cout << "O algoritmo de Dijsktra não funciona em grafos com arestas de pesos negativos" << endl; 
+        return {};
+    }
+
+    else {
+
+
+        //Caso a implementação seja por matriz de adjacência
+
+        if (matriz) {
+            vector<int> real_dist (numVertices + 1, 0);
+            MinHeapNode a;
+            a.v = 0;
+            a.dist = 0;
+
+            BinHeap dist({a}, numVertices);
+            
+            for (int i = 1; i<numVertices; i++) {
+                MinHeapNode *ptr = new MinHeapNode;
+                ptr->v = i;
+                ptr->dist = INT_MAX; 
+                dist.insert(*ptr);
+                real_dist[i] = INT_MAX;
+            }
+
+            dist.decreaseKey(s, 0);
+            real_dist[s] = 0;
+
+            vector<int> S = {};
+            while (S.size() != numVertices) {
+                MinHeapNode a = dist.delMin();
+                S.push_back(a.v);
+
+                vector<int> vizinhosPeso = matrizAdj[a.v];
+
+                for (int i=1; i<vizinhosPeso.size(); i++) {
+                    if (vizinhosPeso[i] >= 0) {
+                        if (dist.getDist(a.v) > dist.getDist(i) + vizinhosPeso[i]) {
+                            int new_dist = dist.getDist(i) + vizinhosPeso[i];
+                            dist.decreaseKey(a.v, new_dist);
+                            real_dist[a.v] = new_dist; 
+                        }
+
+
+                    }
+                }
+            }
+            return real_dist; 
+        }
+
+        //Caso a implementação seja por lista de adjacência
+        else {
+            vector<int> real_dist (numVertices + 1, 0);
+            MinHeapNode a;
+            a.v = 0;
+            a.dist = 0;
+
+            BinHeap dist({a}, numVertices);
+            
+            for (int i = 1; i<numVertices; i++) {
+                MinHeapNode *ptr = new MinHeapNode;
+                ptr->v = i;
+                ptr->dist = INT_MAX; 
+                dist.insert(*ptr);
+                real_dist[i] = INT_MAX;
+            }
+
+            dist.decreaseKey(s, 0);
+            real_dist[s] = 0;
+
+            vector<int> S = {};
+            while (S.size() != numVertices) {
+                MinHeapNode a = dist.delMin();
+                S.push_back(a.v);
+
+                vector<int> vizinhos = listaAdj[a.v];
+
+                for (int i=0; i<vizinhos.size(); i++) {
+                    int peso = arestasPesos[make_pair(a.v, vizinhos[i])];
+
+                    if (peso > 0) {
+                        if (dist.getDist(a.v) > dist.getDist(vizinhos[i]) + peso) {
+                            int new_dist = dist.getDist(vizinhos[i]) + peso;
+                            dist.decreaseKey(a.v, new_dist);
+                            real_dist[a.v] = new_dist; 
+                        }
+                    }
+                }
+            }
+            return real_dist; 
+        }
+    }
 }

@@ -73,7 +73,11 @@ void Menu::lerArquivo(string path) {
                     istringstream input(l);
                     int v1, v2, peso;
                     input >> v1 >> v2 >> peso;
-
+                    
+                    if (peso < 0) {
+                        grafo.arestaNeg = true;
+                    }
+                    
                     grafo.addAresta(Aresta(v1, v2, peso));
 
                     matrizAdj.at(v1).at(v2) = peso;
@@ -105,10 +109,14 @@ void Menu::lerArquivo(string path) {
                 if (l.empty() == false) {
 
                     istringstream input(l);
-                    int v1, v2;
-                    input >> v1 >> v2;
-
-                    grafo.addAresta(Aresta(v1, v2));
+                    int v1, v2, peso;
+                    input >> v1 >> v2 >> peso;
+                    
+                    if (peso < 0) {
+                        grafo.arestaNeg = true;
+                    }
+                    
+                    grafo.addAresta(Aresta(v1, v2, peso));
                     numArestas++;
 
                     listaAdj.at(v1-1).push_back(v2);

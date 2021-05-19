@@ -1,5 +1,5 @@
-programa: main.o grafos.o aresta.o menu.o
-	g++ main.o grafos.o aresta.o menu.o -o programa
+programa: main.o grafos.o aresta.o menu.o BinHeap.o
+	g++ main.o grafos.o aresta.o menu.o BinHeap.o -o programa
 	./programa
 
 main.o: src/main.cpp 
@@ -13,6 +13,10 @@ aresta.o: src/aresta.cpp src/aresta.h
 
 menu.o: src/menu.cpp src/menu.h
 	g++ -c src/menu.cpp
+	
+
+BinHeap.o: src/BinHeap.cpp src/BinHeap.h
+	g++ -c src/BinHeap.cpp
 
 clean:
 	rm *.o
