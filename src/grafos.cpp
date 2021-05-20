@@ -362,6 +362,7 @@ vector<vector<int>> Grafo::getComponentesConexas() {
     
 }
 
+//Algoritmo de Dijkstra implementado com binary heap
 vector<int> Grafo::Dijk(int s) {
     if (arestaNeg) {
         cout << "O algoritmo de Dijsktra não funciona em grafos com arestas de pesos negativos" << endl; 
@@ -370,18 +371,20 @@ vector<int> Grafo::Dijk(int s) {
 
     else {
 
-
         //Caso a implementação seja por matriz de adjacência
 
         if (matriz) {
+            vector<int> marcados (numVertices +1, 0);
             vector<int> real_dist (numVertices + 1, 0);
+            vector<int> parent (numVertices + 1, 0);
+
             MinHeapNode a;
             a.v = 0;
             a.dist = 0;
 
             BinHeap dist({a}, numVertices);
             
-            for (int i = 1; i<numVertices; i++) {
+            for (int i = 1; i<=numVertices; i++) {
                 MinHeapNode *ptr = new MinHeapNode;
                 ptr->v = i;
                 ptr->dist = INT_MAX; 
@@ -389,25 +392,39 @@ vector<int> Grafo::Dijk(int s) {
                 real_dist[i] = INT_MAX;
             }
 
-            dist.decreaseKey(s, 0);
+            dist.decreaseKey(s, 0); 
             real_dist[s] = 0;
+            parent[s] = -1;
 
             vector<int> S = {};
             while (S.size() != numVertices) {
-                MinHeapNode a = dist.delMin();
+                MinHeapNode a = dist.delMin(); 
+                int d = a.dist;
+
+                marcados[a.v] = 1; 
+
+                //cout << a.v << endl;
                 S.push_back(a.v);
 
                 vector<int> vizinhosPeso = matrizAdj[a.v];
-
+                //cout << "u = " << a.v << endl; 
                 for (int i=1; i<vizinhosPeso.size(); i++) {
-                    if (vizinhosPeso[i] >= 0) {
-                        if (dist.getDist(a.v) > dist.getDist(i) + vizinhosPeso[i]) {
-                            int new_dist = dist.getDist(i) + vizinhosPeso[i];
-                            dist.decreaseKey(a.v, new_dist);
-                            real_dist[a.v] = new_dist; 
+                    if (marcados[i] == 0) {
+                        if (vizinhosPeso[i] > 0) {
+                            //cout << "v = " << i << endl; 
+                            //cout << "w(u,v) =  " << vizinhosPeso[i] << endl;
+                            
+                            //cout << "d[v] " << dist.getDist(i) << endl;
+                            //cout << "d[u] " << d << endl; 
+                            
+                            if (dist.getDist(i) > d + vizinhosPeso[i]) {
+                                int new_dist = d + vizinhosPeso[i];
+                                dist.decreaseKey(i, new_dist);
+                                //cout << "new d[v] = " << dist.getDist(i) << endl;
+                                parent[i] = a.v;
+                                real_dist[i] = new_dist; 
+                            }
                         }
-
-
                     }
                 }
             }
@@ -416,6 +433,8 @@ vector<int> Grafo::Dijk(int s) {
 
         //Caso a implementação seja por lista de adjacência
         else {
+            vector<int> marcados (numVertices +1, 0);
+            vector<int> parent (numVertices + 1, 0);
             vector<int> real_dist (numVertices + 1, 0);
             MinHeapNode a;
             a.v = 0;
@@ -423,7 +442,7 @@ vector<int> Grafo::Dijk(int s) {
 
             BinHeap dist({a}, numVertices);
             
-            for (int i = 1; i<numVertices; i++) {
+            for (int i = 1; i<=numVertices; i++) {
                 MinHeapNode *ptr = new MinHeapNode;
                 ptr->v = i;
                 ptr->dist = INT_MAX; 
@@ -431,24 +450,42 @@ vector<int> Grafo::Dijk(int s) {
                 real_dist[i] = INT_MAX;
             }
 
-            dist.decreaseKey(s, 0);
+            dist.decreaseKey(s, 0); 
             real_dist[s] = 0;
+            parent[s] = -1;
 
             vector<int> S = {};
             while (S.size() != numVertices) {
-                MinHeapNode a = dist.delMin();
+                MinHeapNode a = dist.delMin(); 
+                int d = a.dist;
+
+                marcados[a.v] = 1; 
+
                 S.push_back(a.v);
 
-                vector<int> vizinhos = listaAdj[a.v];
+                vector<int> vizinhos = listaAdj[a.v-1];
+
+                //cout << "u = " << a.v << endl; 
 
                 for (int i=0; i<vizinhos.size(); i++) {
-                    int peso = arestasPesos[make_pair(a.v, vizinhos[i])];
+                    if (vizinhos[i] > 0) {
+                        if (marcados[vizinhos[i]] == 0) {
+                                int wuv = arestasPesos[make_pair(a.v, vizinhos[i])];
+                                //cout << "v = " << vizinhos[i] << endl; 
+                                //cout << "w(u,v) =  " << wuv << endl;
+                                
+                                //cout << "d[v] " << dist.getDist(vizinhos[i]) << endl;
+                                //cout << "d[u] " << d << endl; 
+                                
 
-                    if (peso > 0) {
-                        if (dist.getDist(a.v) > dist.getDist(vizinhos[i]) + peso) {
-                            int new_dist = dist.getDist(vizinhos[i]) + peso;
-                            dist.decreaseKey(a.v, new_dist);
-                            real_dist[a.v] = new_dist; 
+                                if (dist.getDist(vizinhos[i]) > d + wuv) {
+                                    int new_dist = d + wuv;
+                                    dist.decreaseKey(vizinhos[i], new_dist);
+                                    //cout << "new d[v] = " << dist.getDist(vizinhos[i]) << endl;
+                                    parent[vizinhos[i]] = a.v;
+                                    real_dist[vizinhos[i]] = new_dist; 
+                                }
+                            
                         }
                     }
                 }
@@ -456,4 +493,14 @@ vector<int> Grafo::Dijk(int s) {
             return real_dist; 
         }
     }
+}
+
+void Grafo::printPath(vector<int> parent, int j) {
+    if(parent[j] == -1) {
+        return;
+    }
+
+    printPath(parent, parent[j]);
+
+    cout << j << endl; 
 }

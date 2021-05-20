@@ -15,6 +15,8 @@ class Menu {
         void lerArquivo(string);
         void escreverSaida (Grafo);
 
+        void estudoDeCaso(Grafo);
+
     private:
         bool continuar; 
 

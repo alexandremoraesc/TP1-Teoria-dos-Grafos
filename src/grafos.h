@@ -31,6 +31,7 @@ class Grafo {
         int getDiametro();
         int getNumVertices();
         int getNumArestas();
+        void printPath(vector<int>, int);
         vector<vector<int>> getComponentesConexas();
         bool matriz;
         vector<vector<int>> componentesconexas;

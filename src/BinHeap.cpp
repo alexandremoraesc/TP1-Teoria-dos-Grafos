@@ -1,5 +1,8 @@
 #include "BinHeap.h"
 #include <stdlib.h>
+#include <iostream>
+
+using namespace std; 
 
 BinHeap::BinHeap(vector<MinHeapNode> heapvector_, int capacity_){
             heapvector = heapvector_;
@@ -12,14 +15,13 @@ BinHeap::BinHeap(vector<MinHeapNode> heapvector_, int capacity_){
 void BinHeap::percUp(int i) {
     while ((i / 2) > 0){
         if (heapvector[i].dist < heapvector[i/2].dist){
+            //Mudando as posições dos nós
+            pos[heapvector[i/2].v] = i; 
+            pos[heapvector[i].v] = i/2;
+            
             MinHeapNode tmp = heapvector[i/2];
             heapvector[i/2] = heapvector[i];
             heapvector[i] = tmp;
-
-            //Mudando as posições dos nós
-            pos[heapvector[i/2].v] = i;
-            pos[heapvector[i].v] = i/2;
-
         }
 
         else {
@@ -41,13 +43,15 @@ void BinHeap::percDown(int i){
         while ((i*2) <= currentSize){
             int mc = minChild(i);
             if (heapvector[i].dist > heapvector[mc].dist){
+                //Mudando as posições dos nós
+                pos[heapvector[i].v] = mc;
+                pos[heapvector[mc].v] = i;
+                
                 MinHeapNode tmp = heapvector[i];
                 heapvector[i] = heapvector[mc];
                 heapvector[mc] = tmp;
 
-                //Mudando as posições dos nós
-                pos[heapvector[i].v] = mc;
-                pos[heapvector[mc].v] = i;
+                
             }
             else {
                 pos[heapvector[i].v] = i;
@@ -81,11 +85,11 @@ MinHeapNode BinHeap::delMin(){
         return retval;
     }
     else{
-        MinHeapNode retval = heapvector[0];
-        heapvector[1] = heapvector[currentSize];
+        MinHeapNode retval = heapvector[1];
+        //heapvector[1] = heapvector[currentSize];
         currentSize = currentSize - 1;
         heapvector.pop_back();
-        percDown(1);
+        //percDown(1);
         return retval;
     }
 }
@@ -114,9 +118,10 @@ int BinHeap::findMin(){
 }
 
 void BinHeap::decreaseKey(int v, int distan) {
-    int ind = pos[v];
+    int ind = pos[v]; 
     heapvector[ind].dist = distan;
     percUp(ind);
+    
 }
 
 int BinHeap::getDist(int vertice) {

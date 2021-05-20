@@ -36,6 +36,7 @@ void Menu::receberArquivo() {
 void Menu::lerArquivo(string path) {
     ifstream arquivo; 
     Grafo grafo; 
+    grafo.arestaNeg = false;
             
     arquivo.open(path);
     if(!arquivo) {
@@ -127,7 +128,8 @@ void Menu::lerArquivo(string path) {
             grafo.setListaAdj(listaAdj);
             cout << "Lido" << endl;
         }
-        return escreverSaida(grafo);
+        //return escreverSaida(grafo);
+          return estudoDeCaso(grafo);
     }
 }
 
@@ -232,3 +234,9 @@ void Menu::escreverSaida(Grafo g) {
     }
 }
 
+void Menu::estudoDeCaso(Grafo g) { 
+    vector<int> a = g.Dijk(1);
+    for (int i = 1; i < a.size(); i++) {
+       cout << a[i] << endl;
+    }
+}
