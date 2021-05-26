@@ -12,6 +12,9 @@ class Aresta {
         void printAresta();
         vector<int> getVertices();
         int getPeso();
+
+        bool operator <(const Aresta &);
+        bool operator >(const Aresta &);
     private:
         vector<int> vertices;  
         int peso;

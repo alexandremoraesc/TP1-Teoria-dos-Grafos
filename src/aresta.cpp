@@ -21,3 +21,21 @@ vector<int> Aresta::getVertices() {
 int Aresta::getPeso() {
     return peso;
 }
+
+bool Aresta::operator<(const Aresta &a) {
+    if (a.peso > peso) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}
+
+bool Aresta::operator>(const Aresta &a) {
+    if (a.peso < peso) {
+        return true;
+    }
+    else {
+        return false;
+    }
+}

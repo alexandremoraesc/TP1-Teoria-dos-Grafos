@@ -140,7 +140,7 @@ void Menu::escreverSaida(Grafo g) {
     string nome;
     vector<vector<int>> b;
 
-    cout << "Digite o nome do arquivo de saída" << endl;
+    cout << "Digite o nome do arquivo de saída com as informações básicas do grafo" << endl;
     cin >> nome;
 
     arquivo.open(nome);
@@ -164,79 +164,109 @@ void Menu::escreverSaida(Grafo g) {
         }
         arquivo << '\n';
     }
-
-
-    cout << "Você deseja realizar uma 1.BFS ou 2.DFS? Digite qualquer outra tecla se não desejar. " << endl;
-    cin >> opcao;
-
-    if (opcao == 1) {
-        int vertice;
-        vector<vector<int>> a;
-        vector<int> marcados;
-
-        cout << "Digite o vértice que deseja começar a busca" << endl;
-        cin >> vertice;
-
-        a = g.BFS(vertice);
-
-        marcados = a.back();
-
-        arquivo << '\n';
-        arquivo << "BFS vértice " << vertice << endl;
-        arquivo << "Ordem de vértice marcados: " << endl;
-
-        for (int i = 0; i<marcados.size(); i++) {
-            arquivo << marcados.at(i) << " "; 
-        }
-
-        arquivo << '\n';
-
-        for (int j = 0; j<a.back().size(); j++) {
-            int v = a.back().at(j);
-            arquivo << "Vértice " << v << endl;
-            arquivo << "Pai: " << a.at(v).at(0) << endl;
-            arquivo << "Nível: " << a.at(v).at(1) << endl;
-            arquivo << '\n';
-        }
-    }
-
-    else if (opcao == 2){
-        int vertice;
-        vector<vector<int>> a;
-        vector<int> marcados;
-
-        cout << "Digite o vértice que deseja começar a busca" << endl;
-        cin >> vertice;
-
-        a = g.DFS(vertice);
-
-        marcados = a.back();
-
-        arquivo << '\n';
-        arquivo << "DFS vértice " << vertice << endl;
-        arquivo << "Ordem de vértice marcados: " << endl;
-
-        for (int i = 0; i<marcados.size(); i++) {
-            arquivo << marcados.at(i) << " "; 
-        }
-
-        arquivo << '\n';
-        arquivo << '\n';
-
-        for (int j = 0; j<a.back().size(); j++) {
-            int v = a.back().at(j);
-            arquivo << "Vértice " << v << endl;
-            arquivo << "Pai: " << a.at(v).at(0) << endl;
-            arquivo << "Nível: " << a.at(v).at(1) << endl;
-            arquivo << '\n';
-        }
-
-    }
 }
 
 void Menu::estudoDeCaso(Grafo g) { 
-    vector<int> a = g.Dijk(1);
-    for (int i = 1; i < a.size(); i++) {
-       cout << a[i] << endl;
+    vector<Aresta> a = g.Kruskal();
+
+    for (int i = 0; i < a.size(); i++) {
+        a[i].printAresta();
     }
+}
+
+void Menu::printBFS(Grafo g, string nome) {
+    int vertice;
+    ofstream arquivo;
+    vector<vector<int>> a;
+    vector<int> marcados;
+
+    arquivo.open(nome);
+
+    cout << "Digite o vértice que deseja começar a busca" << endl;
+    cin >> vertice;
+
+    a = g.BFS(vertice);
+
+    marcados = a.back();
+
+    arquivo << '\n';
+    arquivo << "BFS vértice " << vertice << endl;
+    arquivo << "Ordem de vértice marcados: " << endl;
+
+    for (int i = 0; i<marcados.size(); i++) {
+        arquivo << marcados.at(i) << " "; 
+    }
+
+    arquivo << '\n';
+
+    for (int j = 0; j<a.back().size(); j++) {
+        int v = a.back().at(j);
+        arquivo << "Vértice " << v << endl;
+        arquivo << "Pai: " << a.at(v).at(0) << endl;
+        arquivo << "Nível: " << a.at(v).at(1) << endl;
+        arquivo << '\n';
+    }
+}
+
+void Menu::printDFS(Grafo g, string nome) {
+    int vertice;
+    vector<vector<int>> a;
+    vector<int> marcados;
+    ofstream arquivo;
+
+    arquivo.open(nome);
+
+    cout << "Digite o vértice que deseja começar a busca" << endl;
+    cin >> vertice;
+
+    a = g.DFS(vertice);
+
+    marcados = a.back();
+
+    arquivo << '\n';
+    arquivo << "DFS vértice " << vertice << endl;
+    arquivo << "Ordem de vértice marcados: " << endl;
+
+    for (int i = 0; i<marcados.size(); i++) {
+        arquivo << marcados.at(i) << " "; 
+    }
+
+    arquivo << '\n';
+    arquivo << '\n';
+
+    for (int j = 0; j<a.back().size(); j++) {
+        int v = a.back().at(j);
+        arquivo << "Vértice " << v << endl;
+        arquivo << "Pai: " << a.at(v).at(0) << endl;
+        arquivo << "Nível: " << a.at(v).at(1) << endl;
+        arquivo << '\n';
+    }
+}
+
+void Menu::printDijk(Grafo g, string nome) {
+
+}
+
+void Menu::printMST(Grafo g, string nome) {
+    vector<Aresta> MST = g.Kruskal();
+
+    ofstream arquivo;
+    arquivo.open(nome);
+
+    arquivo << "MST" << endl;
+
+    for (int i=0; i<MST.size(); i++) {
+        int v1 = MST[i].getVertices()[0];
+        int v2 = MST[i].getVertices()[1];
+        int peso = MST[i].getPeso();
+        arquivo << v1 << " " << v2 << " " << peso << endl;
+    }
+}
+
+void Menu::mostrarMenu() {
+
+}
+
+void Menu::printDistancia(Grafo g, string nome) {
+
 }

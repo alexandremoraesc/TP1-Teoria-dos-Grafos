@@ -14,7 +14,8 @@ class Grafo {
         Grafo();
         vector<vector<int>> BFS(int);
         vector<vector<int>> DFS(int);
-        vector<int> Dijk(int);
+        vector<vector<int>> Dijk(int);
+        vector<Aresta> Kruskal();
         void printArestas();
         void printVertices();
         void setNumVertices(int);
@@ -28,6 +29,7 @@ class Grafo {
         int getGrauMed();
         int getMedianaGrau();
         int getDistancia(int, int, vector<vector<int>>);
+        int getDistanciaDijk(int, int);
         int getDiametro();
         int getNumVertices();
         int getNumArestas();

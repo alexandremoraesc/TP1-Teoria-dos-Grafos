@@ -362,8 +362,19 @@ vector<vector<int>> Grafo::getComponentesConexas() {
     
 }
 
+int Grafo::getDistanciaDijk(int v1, int v2) {
+    vector<vector<int>> a = Dijk(v1);
+    
+    int dist = a[0][v2];
+    vector<int> parent = a[1];
+
+    printPath(parent, v2);
+    
+    return dist;
+}
+
 //Algoritmo de Dijkstra implementado com binary heap
-vector<int> Grafo::Dijk(int s) {
+vector<vector<int>> Grafo::Dijk(int s) {
     if (arestaNeg) {
         cout << "O algoritmo de Dijsktra não funciona em grafos com arestas de pesos negativos" << endl; 
         return {};
@@ -374,6 +385,7 @@ vector<int> Grafo::Dijk(int s) {
         //Caso a implementação seja por matriz de adjacência
 
         if (matriz) {
+            vector<vector<int>> dijks; 
             vector<int> marcados (numVertices +1, 0);
             vector<int> real_dist (numVertices + 1, 0);
             vector<int> parent (numVertices + 1, 0);
@@ -428,11 +440,15 @@ vector<int> Grafo::Dijk(int s) {
                     }
                 }
             }
-            return real_dist; 
+            dijks.push_back(real_dist);
+            dijks.push_back(parent);
+            
+            return dijks;
         }
 
         //Caso a implementação seja por lista de adjacência
         else {
+            vector<vector<int>> dijks;
             vector<int> marcados (numVertices +1, 0);
             vector<int> parent (numVertices + 1, 0);
             vector<int> real_dist (numVertices + 1, 0);
@@ -442,6 +458,7 @@ vector<int> Grafo::Dijk(int s) {
 
             BinHeap dist({a}, numVertices);
             
+            //Cria um min heap binário para armazenar as distâncias
             for (int i = 1; i<=numVertices; i++) {
                 MinHeapNode *ptr = new MinHeapNode;
                 ptr->v = i;
@@ -490,17 +507,51 @@ vector<int> Grafo::Dijk(int s) {
                     }
                 }
             }
-            return real_dist; 
+            dijks.push_back(real_dist);
+            dijks.push_back(parent);
+            
+            return dijks; 
         }
     }
 }
 
 void Grafo::printPath(vector<int> parent, int j) {
     if(parent[j] == -1) {
+        cout << j << endl;
         return;
     }
 
     printPath(parent, parent[j]);
 
     cout << j << endl; 
+}
+
+vector<Aresta> Grafo::Kruskal() { 
+    vector<Aresta> MST;
+    vector<int> parents(numVertices + 1, 0);
+    sort(arestas.begin(), arestas.end());
+    int MSTtotal = 1;
+    
+
+    MST.push_back(arestas[0]);
+    parents[arestas[0].getVertices()[1]] = arestas[0].getVertices()[0];
+
+    for (int i=1; i< arestas.size(); i++) {
+        int v1 = arestas[i].getVertices()[0];
+        int v2 = arestas[i].getVertices()[1];
+        cout << v1 << " - " << v2 << endl;
+        cout << "Parent " << parents[v2] << endl;
+        if (MST.size() != numVertices - 1) {
+            if (parents[v2] == 0) {
+                MST.push_back(arestas[i]);
+                parents[v2] = v1;
+                MSTtotal += 1;
+            }
+        }
+        else { 
+            break;
+        }
+    }
+    
+    return MST;
 }
