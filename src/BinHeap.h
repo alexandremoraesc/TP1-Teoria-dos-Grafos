@@ -5,7 +5,7 @@ using namespace std;
 struct MinHeapNode {
     public:
         int v;
-        int dist;
+        double dist;
 };
 
 class BinHeap{
@@ -25,7 +25,7 @@ class BinHeap{
         void buildheap(vector<MinHeapNode>);
         bool isEmpty();
         int findMin();
-        void decreaseKey(int, int);
-        int getDist(int);
+        void decreaseKey(int, double);
+        double getDist(int);
 };
 

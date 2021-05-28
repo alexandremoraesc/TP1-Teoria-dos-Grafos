@@ -8,16 +8,16 @@ using namespace std;
 
 class Aresta { 
     public:
-        Aresta(int, int, int = 1);
+        Aresta(int, int, double = 1);
         void printAresta();
         vector<int> getVertices();
-        int getPeso();
+        double getPeso();
 
         bool operator <(const Aresta &);
         bool operator >(const Aresta &);
     private:
         vector<int> vertices;  
-        int peso;
+        double peso;
 };
 
 #endif

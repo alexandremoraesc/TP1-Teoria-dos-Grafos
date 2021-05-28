@@ -3,7 +3,7 @@
 
 using namespace std; 
 
-Aresta::Aresta(int v1, int v2, int peso_) {
+Aresta::Aresta(int v1, int v2, double peso_) {
     vertices.push_back(v1);
     vertices.push_back(v2);
     peso = peso_;
@@ -18,7 +18,7 @@ vector<int> Aresta::getVertices() {
     return vertices;
 }
 
-int Aresta::getPeso() {
+double Aresta::getPeso() {
     return peso;
 }
 

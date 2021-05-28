@@ -14,13 +14,13 @@ class Grafo {
         Grafo();
         vector<vector<int>> BFS(int);
         vector<vector<int>> DFS(int);
-        vector<vector<int>> Dijk(int);
+        vector<vector<double>> Dijk(int);
         vector<Aresta> Kruskal();
         void printArestas();
         void printVertices();
         void setNumVertices(int);
         void setNumArestas(int);
-        void setMatrizAdj(vector<vector<int>>);
+        void setMatrizAdj(vector<vector<double>>);
         void setListaAdj (vector<vector<int>>);
         void addAresta(Aresta);
         vector<int> getGraus();
@@ -28,23 +28,27 @@ class Grafo {
         int getGrauMax();
         int getGrauMed();
         int getMedianaGrau();
-        int getDistancia(int, int, vector<vector<int>>);
-        int getDistanciaDijk(int, int);
+        vector<double> getDistancia(int, int);
+        vector<double> getDistanciaDijk(int, int);
         int getDiametro();
         int getNumVertices();
         int getNumArestas();
-        void printPath(vector<int>, int);
+        double getExcent(int, vector<double>);
+        vector<double> getPath(vector<double>, int);
         vector<vector<int>> getComponentesConexas();
         bool matriz;
         vector<vector<int>> componentesconexas;
-        map<pair<int, int>, int> arestasPesos;  
+        map<pair<int, int>, double> arestasPesos;  
         bool arestaNeg; 
+        bool existePeso;
+        bool cleared; 
+        double MSTSum; 
 
     private:
         vector<int> grausVertices;
         int numVertices;
         int numArestas;
-        vector<vector<int>> matrizAdj;
+        vector<vector<double>> matrizAdj;
         vector<vector<int>> listaAdj;
         vector<Aresta> arestas;
         vector<int> vertices;

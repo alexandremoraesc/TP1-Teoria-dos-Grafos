@@ -63,7 +63,7 @@ void Menu::lerArquivo(string path) {
             grafo.setNumVertices(n);
 
             //Cria a matriz de adjacencia, e seta todos os valores como false
-            vector<vector<int>> matrizAdj(n+1, vector<int>(n+1, 0));
+            vector<vector<double>> matrizAdj(n+1, vector<double>(n+1, 0));
 
             //Le o arquivo e coloca os valores como true onde existe aresta, e soma uma aresta a contagem
             int nArestas = 0;
@@ -72,11 +72,17 @@ void Menu::lerArquivo(string path) {
             while(getline(arquivo, l)) {
                 if (l.empty() == false) {
                     istringstream input(l);
-                    int v1, v2, peso;
+                    int v1, v2;
+                    double peso; 
+
                     input >> v1 >> v2 >> peso;
                     
                     if (peso < 0) {
                         grafo.arestaNeg = true;
+                    }
+
+                    if (peso > 1) {
+                        grafo.existePeso = true;
                     }
                     
                     grafo.addAresta(Aresta(v1, v2, peso));
@@ -110,11 +116,17 @@ void Menu::lerArquivo(string path) {
                 if (l.empty() == false) {
 
                     istringstream input(l);
-                    int v1, v2, peso;
+                    int v1, v2;
+                    double peso; 
+
                     input >> v1 >> v2 >> peso;
                     
                     if (peso < 0) {
                         grafo.arestaNeg = true;
+                    }
+
+                    if (peso > 1) {
+                        grafo.existePeso = true;
                     }
                     
                     grafo.addAresta(Aresta(v1, v2, peso));
@@ -128,8 +140,8 @@ void Menu::lerArquivo(string path) {
             grafo.setListaAdj(listaAdj);
             cout << "Lido" << endl;
         }
-        //return escreverSaida(grafo);
-          return estudoDeCaso(grafo);
+        return escreverSaida(grafo);
+          //return estudoDeCaso(grafo);
     }
 }
 
@@ -140,7 +152,7 @@ void Menu::escreverSaida(Grafo g) {
     string nome;
     vector<vector<int>> b;
 
-    cout << "Digite o nome do arquivo de saída com as informações básicas do grafo" << endl;
+    cout << "Digite o nome do arquivo de saída com as informações do grafo" << endl;
     cin >> nome;
 
     arquivo.open(nome);
@@ -162,8 +174,12 @@ void Menu::escreverSaida(Grafo g) {
         for (int l = 0; l<b.at(k).size(); l++) {
             arquivo << b.at(k).at(l) << " ";
         }
-        arquivo << '\n';
+        arquivo << endl;
     }
+    
+    arquivo << endl; 
+
+    mostrarMenu(g, nome);
 }
 
 void Menu::estudoDeCaso(Grafo g) { 
@@ -251,22 +267,167 @@ void Menu::printMST(Grafo g, string nome) {
     vector<Aresta> MST = g.Kruskal();
 
     ofstream arquivo;
-    arquivo.open(nome);
+    arquivo.open(nome, std::ios_base::app);
+    arquivo << endl; 
 
-    arquivo << "MST" << endl;
+    arquivo << "MST - Soma total = "  << g.MSTSum << endl;
 
     for (int i=0; i<MST.size(); i++) {
         int v1 = MST[i].getVertices()[0];
         int v2 = MST[i].getVertices()[1];
-        int peso = MST[i].getPeso();
+        double peso = MST[i].getPeso();
+        cout << peso << endl; 
         arquivo << v1 << " " << v2 << " " << peso << endl;
     }
 }
 
-void Menu::mostrarMenu() {
+void Menu::mostrarMenu(Grafo g, string nome) {
+    continuar = true;
+    while (continuar) {
+
+        cout << "1. Calcular a distância e caminho entre dois vértices" << endl;
+        cout << "2. Calcular uma MST (Minimum Spanning Tree) para o grafo" << endl;
+        cout << "3. Calcular a excentricidade de um vértice" << endl;
+        cout << "4. Calcular a distância de um vértice para todos os outros" << endl;
+        cout << "5. Sair" << endl;
+
+        char escolha;
+	
+	    cin >> escolha;
+
+        switch (escolha) {
+        
+            case '1':
+                printDistancia(g, nome);
+                break;
+            
+            case '2':
+                printMST(g, nome);
+                break;
+            
+            case '3':
+                printExcen(g, nome);
+                break;
+                
+            case '4':
+                printDistTodos(g, nome);
+                break;
+            
+            case '5':
+                continuar = false;
+                break;
+                
+            default:
+                cout << "Por favor, escolha um número dentre os mostrados" << std::endl;
+	}
+
+
+    }
+
+
+
 
 }
 
 void Menu::printDistancia(Grafo g, string nome) {
+    int v1, v2;
+    char opcao;
+    bool cont = true;
+    ofstream arquivo;
 
+    while (cont) {
+        cout << "Digite o número do primeiro vértice" << endl;
+        cin >> v1;
+
+        cout << "Digite o número do segundo vértice" << endl;
+        cin >> v2;
+    
+        cout << "Os vértices escolhidos são " << v1 << " e " << v2 << ". Confirma? Digite s ou n. " << endl;
+        cin >> opcao;
+
+        if (opcao == 's') {
+
+            vector<double> distCaminho = g.getDistancia(v1, v2);
+        
+            arquivo.open(nome, std::ios_base::app);
+            
+            arquivo << endl; 
+
+            arquivo << "Distância " << v1 << "-" << v2 << endl;
+            arquivo << distCaminho.back() << endl;
+     
+            arquivo << "Caminho: " << endl;
+            for (int i=0; i < distCaminho.size()-1; i++) {
+                arquivo << distCaminho[i] << " ";
+            }
+
+            arquivo << endl; 
+
+            cont = false;
+        }
+    } 
+}
+
+void Menu::printDistTodos(Grafo g, string nome) {
+    int v1; 
+    char opcao; 
+    bool cont; 
+    ofstream arquivo; 
+
+
+    arquivo.open(nome, std::ios_base::app);
+
+    while (cont) { 
+        cout << "Escolha o vértice raiz" << endl;
+        cin >> v1;
+
+        cout << "O vértice escolhido foi " << v1 << ". Confirma? Digite s ou n. " <<endl;
+        cin >> opcao;
+
+        arquivo << "Vértice " << v1 << endl; 
+        if (opcao == 's') {
+            vector<vector<double>> a = g.Dijk(v1); 
+
+            for (int i = 1; i < a[0].size(); i++) {
+                arquivo << "Distância " << v1 << "-" << i << endl;
+                arquivo << a[0][i] << endl; 
+
+                arquivo << "Caminho: " << endl;
+                g.cleared = false;
+                vector<double> caminho = g.getPath(a[1], i);
+                for (int i=0; i < caminho.size(); i++) {
+                    arquivo << caminho[i] << " ";
+                }
+                arquivo << endl; 
+            }
+            cont = false;
+        }
+
+    }
+}
+
+void Menu::printExcen(Grafo g, string nome) {
+    int v1; 
+    char opcao; 
+    bool cont; 
+    ofstream arquivo; 
+
+
+    arquivo.open(nome, std::ios_base::app);
+
+    while (cont) { 
+        cout << "Escolha o vértice raiz" << endl;
+        cin >> v1;
+
+        cout << "O vértice escolhido foi " << v1 << ". Confirma? Digite s ou n. " <<endl;
+        cin >> opcao;
+
+        if (opcao == 's') {
+            arquivo << "Excentricidade do vértice " << v1 << endl; 
+            vector<vector<double>> a = g.Dijk(v1); 
+            arquivo << g.getExcent(v1, a[0]) << endl; 
+            arquivo << endl; 
+            cont = false;
+        }
+    }
 }

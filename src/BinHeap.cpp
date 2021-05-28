@@ -117,14 +117,14 @@ int BinHeap::findMin(){
     return heapvector[1].dist;
 }
 
-void BinHeap::decreaseKey(int v, int distan) {
+void BinHeap::decreaseKey(int v, double distan) {
     int ind = pos[v]; 
     heapvector[ind].dist = distan;
     percUp(ind);
     
 }
 
-int BinHeap::getDist(int vertice) {
+double BinHeap::getDist(int vertice) {
     int ind = pos[vertice];
     return heapvector[ind].dist;
 }
