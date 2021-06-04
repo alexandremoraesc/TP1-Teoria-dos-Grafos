@@ -496,17 +496,10 @@ vector<vector<double>> Grafo::Dijk(int s) {
                                 double a1 = arestasPesos[make_pair(a.v, vizinhos[i])];
                                 double a2 = arestasPesos[make_pair(vizinhos[i], a.v)];
                                 double wuv = max(a1, a2);
-                                //cout << "v = " << vizinhos[i] << endl; 
-                                //cout << "w(u,v) =  " << wuv << endl;
-                                
-                                //cout << "d[v] " << dist.getDist(vizinhos[i]) << endl;
-                                //cout << "d[u] " << d << endl; 
-                                
 
                                 if (dist.getDist(vizinhos[i]) > d + wuv) {
                                     double new_dist = d + wuv;
                                     dist.decreaseKey(vizinhos[i], new_dist);
-                                    //cout << "new d[v] = " << dist.getDist(vizinhos[i]) << endl;
                                     parent[vizinhos[i]] = a.v;
                                     real_dist[vizinhos[i]] = new_dist; 
                                 }
@@ -523,6 +516,7 @@ vector<vector<double>> Grafo::Dijk(int s) {
     }
 }
 
+//Retorna o caminho dado um vetor de parents e um vértice j
 vector<double> Grafo::getPath(vector<double> parent, int j) {
 
     if (!cleared) {
@@ -541,6 +535,7 @@ vector<double> Grafo::getPath(vector<double> parent, int j) {
     return path;
 }
 
+// Algoritmo de Kruskal para a obtenção de uma MST
 vector<Aresta> Grafo::Kruskal() { 
     path.clear();
     vector<Aresta> MST;
@@ -578,6 +573,7 @@ vector<Aresta> Grafo::Kruskal() {
     return MST;
 }
 
+//Retorna a excentricidade de um determinado vertice dado um vetor de distâncias
 double Grafo::getExcent(int v, vector<double> dist) { 
     path.clear();
     double excent = 0;
