@@ -313,10 +313,9 @@ void Grafo::printArestas() {
 }
 //Adiciona uma aresta ao grafo
 void Grafo::addAresta(Aresta a) {
-    arestas.push_back(a);
+    //arestas.push_back(a);
     if (matriz == false) {
         arestasPesos.insert(make_pair(make_pair(a.getVertices()[0], a.getVertices()[1]), a.getPeso()));
-        arestasPesos.insert(make_pair(make_pair(a.getVertices()[1], a.getVertices()[0]), a.getPeso()));
     }
 }
 
@@ -372,17 +371,20 @@ vector<vector<int>> Grafo::getComponentesConexas() {
 
 vector<double> Grafo::getDistanciaDijk(int v1, int v2) {
     path.clear();
+
     vector<vector<double>> a = Dijk(v1);
     vector<vector<double>> distDijk;
 
     double dist = a[0][v2];
-    
-    vector<double> caminho = getPath(a[1], v2); 
+    if (dist != INT_MAX) {    
+        vector<double> caminho = getPath(a[1], v2); 
 
-    caminho.push_back(dist);
-    
+        caminho.push_back(dist);
 
-    return caminho;
+        return caminho;
+    }
+
+    return {{}};
 }
 
 //Algoritmo de Dijkstra implementado com binary heap
@@ -429,24 +431,15 @@ vector<vector<double>> Grafo::Dijk(int s) {
 
                 marcados[a.v] = 1; 
 
-                //cout << a.v << endl;
                 S.push_back(a.v);
 
                 vector<double> vizinhosPeso = matrizAdj[a.v];
-                //cout << "u = " << a.v << endl; 
                 for (int i=1; i<vizinhosPeso.size(); i++) {
                     if (marcados[i] == 0) {
                         if (vizinhosPeso[i] > 0) {
-                            //cout << "v = " << i << endl; 
-                            //cout << "w(u,v) =  " << vizinhosPeso[i] << endl;
-                            
-                            //cout << "d[v] " << dist.getDist(i) << endl;
-                            //cout << "d[u] " << d << endl; 
-                            
                             if (dist.getDist(i) > d + vizinhosPeso[i]) {
                                 double new_dist = d + vizinhosPeso[i];
                                 dist.decreaseKey(i, new_dist);
-                                //cout << "new d[v] = " << dist.getDist(i) << endl;
                                 parent[i] = a.v;
                                 real_dist[i] = new_dist; 
                             }
@@ -462,6 +455,7 @@ vector<vector<double>> Grafo::Dijk(int s) {
 
         //Caso a implementação seja por lista de adjacência
         else {
+            cout << "Dijkstra" << endl;
             vector<vector<double>> dijks;
             vector<int> marcados (numVertices +1, 0);
             vector<double> parent (numVertices + 1, 0);
@@ -496,12 +490,12 @@ vector<vector<double>> Grafo::Dijk(int s) {
 
                 vector<int> vizinhos = listaAdj[a.v-1];
 
-                //cout << "u = " << a.v << endl; 
-
                 for (int i=0; i<vizinhos.size(); i++) {
                     if (vizinhos[i] > 0) {
                         if (marcados[vizinhos[i]] == 0) {
-                                double wuv = arestasPesos[make_pair(a.v, vizinhos[i])];
+                                double a1 = arestasPesos[make_pair(a.v, vizinhos[i])];
+                                double a2 = arestasPesos[make_pair(vizinhos[i], a.v)];
+                                double wuv = max(a1, a2);
                                 //cout << "v = " << vizinhos[i] << endl; 
                                 //cout << "w(u,v) =  " << wuv << endl;
                                 
@@ -548,19 +542,25 @@ vector<double> Grafo::getPath(vector<double> parent, int j) {
 }
 
 vector<Aresta> Grafo::Kruskal() { 
+    path.clear();
     vector<Aresta> MST;
     vector<int> parents(numVertices + 1, 0);
     sort(arestas.begin(), arestas.end());
     double MSTtotal = 0;
     
+    int k = 0;
 
-    MST.push_back(arestas[0]);
-    MSTtotal += arestas[0].getPeso();
+    while (arestas[k].getPeso() == 0) {
+        k++;
+    }
+    
+    MST.push_back(arestas[k]);
+    MSTtotal += arestas[k].getPeso();
 
-    parents[arestas[0].getVertices()[1]] = arestas[0].getVertices()[0];
+    parents[arestas[k].getVertices()[1]] = arestas[k].getVertices()[0];
 
 
-    for (int i=1; i< arestas.size(); i++) {
+    for (int i=k; i< arestas.size(); i++) {
         int v1 = arestas[i].getVertices()[0];
         int v2 = arestas[i].getVertices()[1];
         if (MST.size() != numVertices - 1) {
@@ -579,6 +579,7 @@ vector<Aresta> Grafo::Kruskal() {
 }
 
 double Grafo::getExcent(int v, vector<double> dist) { 
+    path.clear();
     double excent = 0;
 
     for (int i=1; i<dist.size(); i++) {
@@ -588,4 +589,8 @@ double Grafo::getExcent(int v, vector<double> dist) {
     }
 
     return excent;
+}
+
+void Grafo::eraseGraus() {
+    grausVertices = {};
 }

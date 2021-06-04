@@ -1,0 +1,22 @@
+Número de vértices: 1000
+Número de arestas: 25979
+Grau mínimo: 29
+Grau máximo: 75
+Mediana de grau: 52
+Grau médio: 51
+
+xcentricidade do vértice 10
+2.41
+
+Excentricidade do vértice 20
+2.45
+
+Excentricidade do vértice 30
+2.56
+
+Excentricidade do vértice 40
+2.89
+
+Excentricidade do vértice 50
+2.67
+

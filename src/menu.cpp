@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include <ctime>
+#include <bits/stdc++.h>
 
 Menu::Menu() {
     continuar = true;
@@ -141,7 +142,7 @@ void Menu::lerArquivo(string path) {
             cout << "Lido" << endl;
         }
         return escreverSaida(grafo);
-          //return estudoDeCaso(grafo);
+        //return estudoDeCaso(grafo);
     }
 }
 
@@ -163,11 +164,13 @@ void Menu::escreverSaida(Grafo g) {
     arquivo << "Grau máximo: " << g.getGrauMax() << endl;
     arquivo << "Mediana de grau: " << g.getMedianaGrau() << endl;
     arquivo << "Grau médio: " << g.getGrauMed() << endl;
-    //arquivo << "Diâmetro do grafo: " << g.getDiametro() << endl;
+    g.eraseGraus();
     arquivo << "\n";
+    arquivo.close();
 
-    b = g.getComponentesConexas();
+    //b = g.getComponentesConexas();
 
+    /*
     for (int k = 0; k< b.size(); k++) {
         arquivo << "Componente " << k+1 << " ";
         arquivo << "Tamanho: " << b[k].size() << endl; 
@@ -178,16 +181,9 @@ void Menu::escreverSaida(Grafo g) {
     }
     
     arquivo << endl; 
-
+    */
+   
     mostrarMenu(g, nome);
-}
-
-void Menu::estudoDeCaso(Grafo g) { 
-    vector<Aresta> a = g.Kruskal();
-
-    for (int i = 0; i < a.size(); i++) {
-        a[i].printAresta();
-    }
 }
 
 void Menu::printBFS(Grafo g, string nome) {
@@ -323,10 +319,6 @@ void Menu::mostrarMenu(Grafo g, string nome) {
 
 
     }
-
-
-
-
 }
 
 void Menu::printDistancia(Grafo g, string nome) {
@@ -362,6 +354,7 @@ void Menu::printDistancia(Grafo g, string nome) {
             }
 
             arquivo << endl; 
+            arquivo.close();
 
             cont = false;
         }

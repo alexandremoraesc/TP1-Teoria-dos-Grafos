@@ -43,6 +43,7 @@ class Grafo {
         bool existePeso;
         bool cleared; 
         double MSTSum; 
+        void eraseGraus();
 
     private:
         vector<int> grausVertices;

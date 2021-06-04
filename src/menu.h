@@ -15,7 +15,6 @@ class Menu {
         void lerArquivo(string);
         void escreverSaida (Grafo);
         void mostrarMenu(Grafo, string);
-        void estudoDeCaso(Grafo);
         void printDijk(Grafo, string);
         void printBFS(Grafo, string);
         void printDFS(Grafo, string);

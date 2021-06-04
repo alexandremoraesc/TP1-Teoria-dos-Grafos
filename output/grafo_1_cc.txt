@@ -1,9 +1,0 @@
-Número de vértices: 100
-Número de arestas: 583
-Grau mínimo: 5
-Grau máximo: 16
-Mediana de grau: 12
-Grau médio: 11
-
-Componente 1 Tamanho: 100
-

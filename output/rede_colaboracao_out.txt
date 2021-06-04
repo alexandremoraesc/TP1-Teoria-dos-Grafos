@@ -1,0 +1,31 @@
+Número de vértices: 722385
+Número de arestas: 2272543
+Grau mínimo: 0
+Grau máximo: 643
+Mediana de grau: 3
+Grau médio: 6
+
+
+Distância 2722-11365 (Dijkstra-Turing)
+0
+Caminho: 
+
+Distância 2722-471365 (Dijkstra-Kruskal)
+3.48037
+Caminho: 
+2722 9490 7200 10343 646765 490368 10746 3655 471365 
+
+Distância 2722-5709 (Dijkstra-Jon M. Kleinberg)
+2.70699
+Caminho: 
+2722 217250 11456 768 11448 101826 12242 11834 9608 5709 
+
+Distância 2722-11386 (Dijkstra-Éva Tardos)
+2.75351
+Caminho: 
+2722 217250 11456 768 6479 8528 10572 357587 11649 3694 318911 11386 
+
+Distância 2722-343930 (Dijkstra-Daniel R. Figueiredo)
+2.94283
+Caminho: 
+2722 9490 7200 391667 371226 4379 68773 11466 343930 
